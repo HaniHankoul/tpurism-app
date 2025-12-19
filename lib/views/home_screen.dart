@@ -95,24 +95,32 @@ class _HomeScreenState extends State<HomeScreen> {
                   cursorColor: Color(0xffaad09d),
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
                     hintText: "search for trips , attractions ..",
-                    hintStyle: TextStyle(color: Colors.white.withAlpha(80)),
+                    hintStyle: TextStyle(color: Colors.grey),
                     prefixIcon: Icon(
                       CupertinoIcons.search,
                       color: Color(0xffaad09d),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Color(0xffaad09d)),
+                      borderSide: BorderSide(
+                        width: 2,
+                        color: Color(0xffaad09d),
+                      ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Color(0xffaad09d)),
+                      borderSide: BorderSide(
+                        width: 2,
+                        color: Color(0xffaad09d),
+                      ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
-                        width: 2,
+                        width: 3,
                         color: Color(0xffaad09d),
                       ),
                     ),
@@ -121,145 +129,309 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          if (isFiltered)
-            Padding(
-              padding: const EdgeInsets.only(left:8,top: 8 ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          SizedBox(height: 8,),
+          AnimatedContainer(duration: Duration(milliseconds: 250),
+            height: isFiltered?180:0,
+            width: screenWidth * 0.6,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(14),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withAlpha(100),
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                ),
+              ],
+            ),
+            child: SingleChildScrollView(
+              child: Column(
                 children: [
-                  Container(
-                    width: screenWidth * 0.6,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(14),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black,
-                          spreadRadius: 1,
-                          blurRadius: 1,
-                        ),
-                      ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 4,
                     ),
-                    child: Column(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 4,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Trips',
-                                style: TextStyle(
-                                  color: primaryColor,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: 'cairo',
-                                  fontSize: 20,
-                                ),
-                              ),
-
-                              Checkbox(
-                                value: isTrips,
-                                onChanged: (val) {
-                                  setState(() {
-                                    isTrips = !isTrips;
-                                  });
-                                },
-                              ),
-                            ],
+                        Text(
+                          'Trips',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'cairo',
+                            fontSize: 20,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 4,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Attractions',
-                                style: TextStyle(
-                                  color: primaryColor,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: 'cairo',
-                                  fontSize: 20,
-                                ),
-                              ),
-                              Checkbox(
-                                value: isAttractions,
-                                onChanged: (val) {
-                                  setState(() {
-                                    isAttractions = !isAttractions;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 4,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Activities',
-                                style: TextStyle(
-                                  color: primaryColor,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: 'cairo',
-                                  fontSize: 20,
-                                ),
-                              ),
-                              Checkbox(
-                                value: isActivities,
-                                onChanged: (val) {
-                                  setState(() {
-                                    isActivities = !isActivities;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
+              
+                        Checkbox(
+                          activeColor: primaryColor,
+                          hoverColor: primaryColor,
+                          value: isTrips,
+                          onChanged: (val) {
+                            setState(() {
+                              isTrips = !isTrips;
+                            });
+                          },
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(width: 6),
-                  Container(
-                    width: screenWidth * 0.3,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(14),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black,
-                          spreadRadius: 1,
-                          blurRadius: 1,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 4,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Attractions',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'cairo',
+                            fontSize: 20,
+                          ),
+                        ),
+                        Checkbox(
+                          activeColor: primaryColor,
+                          hoverColor: primaryColor,
+                          value: isAttractions,
+                          onChanged: (val) {
+                            setState(() {
+                              isAttractions = !isAttractions;
+                            });
+                          },
                         ),
                       ],
                     ),
-                    child: Column(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 4,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('data'),
-                        Text('data'),
-                        Text('data'),
-                        Text('data'),
-                        Text('data'),
-                        Text('data'),
-                        Text('data'),
-                        Text('data'),
+                        Text(
+                          'Activities',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'cairo',
+                            fontSize: 20,
+                          ),
+                        ),
+                        Checkbox(
+                          activeColor: primaryColor,
+                          hoverColor: primaryColor,
+                          value: isActivities,
+                          onChanged: (val) {
+                            setState(() {
+                              isActivities = !isActivities;
+                            });
+                          },
+                        ),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
+          ),
+
+          // if (isFiltered)
+          //   Padding(
+          //     padding: const EdgeInsets.only(left: 8, top: 8),
+          //     child: Row(
+          //       crossAxisAlignment: CrossAxisAlignment.start,
+          //       children: [
+          //         Container(
+          //           width: screenWidth * 0.6,
+          //           decoration: BoxDecoration(
+          //             color: Colors.white,
+          //             borderRadius: BorderRadius.circular(14),
+          //             boxShadow: [
+          //               BoxShadow(
+          //                 color: Colors.black.withAlpha(100),
+          //                 spreadRadius: 1,
+          //                 blurRadius: 5,
+          //               ),
+          //             ],
+          //           ),
+          //           child: Column(
+          //             children: [
+          //               Padding(
+          //                 padding: const EdgeInsets.symmetric(
+          //                   horizontal: 12,
+          //                   vertical: 4,
+          //                 ),
+          //                 child: Row(
+          //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //                   children: [
+          //                     Text(
+          //                       'Trips',
+          //                       style: TextStyle(
+          //                         color: primaryColor,
+          //                         fontWeight: FontWeight.w600,
+          //                         fontFamily: 'cairo',
+          //                         fontSize: 20,
+          //                       ),
+          //                     ),
+          //
+          //                     Checkbox(
+          //                       activeColor: primaryColor,
+          //                       hoverColor: primaryColor,
+          //                       value: isTrips,
+          //                       onChanged: (val) {
+          //                         setState(() {
+          //                           isTrips = !isTrips;
+          //                         });
+          //                       },
+          //                     ),
+          //                   ],
+          //                 ),
+          //               ),
+          //               Padding(
+          //                 padding: const EdgeInsets.symmetric(
+          //                   horizontal: 12,
+          //                   vertical: 4,
+          //                 ),
+          //                 child: Row(
+          //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //                   children: [
+          //                     Text(
+          //                       'Attractions',
+          //                       style: TextStyle(
+          //                         color: primaryColor,
+          //                         fontWeight: FontWeight.w600,
+          //                         fontFamily: 'cairo',
+          //                         fontSize: 20,
+          //                       ),
+          //                     ),
+          //                     Checkbox(
+          //                       activeColor: primaryColor,
+          //                       hoverColor: primaryColor,
+          //                       value: isAttractions,
+          //                       onChanged: (val) {
+          //                         setState(() {
+          //                           isAttractions = !isAttractions;
+          //                         });
+          //                       },
+          //                     ),
+          //                   ],
+          //                 ),
+          //               ),
+          //               Padding(
+          //                 padding: const EdgeInsets.symmetric(
+          //                   horizontal: 12,
+          //                   vertical: 4,
+          //                 ),
+          //                 child: Row(
+          //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //                   children: [
+          //                     Text(
+          //                       'Activities',
+          //                       style: TextStyle(
+          //                         color: primaryColor,
+          //                         fontWeight: FontWeight.w600,
+          //                         fontFamily: 'cairo',
+          //                         fontSize: 20,
+          //                       ),
+          //                     ),
+          //                     Checkbox(
+          //                       activeColor: primaryColor,
+          //                       hoverColor: primaryColor,
+          //                       value: isActivities,
+          //                       onChanged: (val) {
+          //                         setState(() {
+          //                           isActivities = !isActivities;
+          //                         });
+          //                       },
+          //                     ),
+          //                   ],
+          //                 ),
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //         SizedBox(width: 6),
+          //         Container(
+          //           width: screenWidth * 0.3,
+          //           height: 170,
+          //           decoration: BoxDecoration(
+          //             color: Colors.white,
+          //             borderRadius: BorderRadius.circular(14),
+          //             boxShadow: [
+          //               BoxShadow(
+          //                 color: Colors.black.withAlpha(100),
+          //                 spreadRadius: 1,
+          //                 blurRadius: 5,
+          //               ),
+          //             ],
+          //           ),
+          //           child: Column(
+          //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //             children: [
+          //               Container(
+          //                 height: 50,
+          //                 width: 80,
+          //                 decoration: BoxDecoration(
+          //                   border: Border.all(color: seconderyColor, width: 2),
+          //                   borderRadius: BorderRadius.circular(12),
+          //                   boxShadow: [
+          //                     BoxShadow(
+          //                       color: Colors.black.withAlpha(100),
+          //                       blurRadius: 1,
+          //                     ),
+          //                   ],
+          //                   color: Colors.white,
+          //                 ),
+          //                 child: Center(
+          //                   child: Text(
+          //                     'settings',
+          //                     style: TextStyle(
+          //                       fontWeight: FontWeight.w400,
+          //                       color: seconderyColor,
+          //                       fontFamily: 'cairo',
+          //                     ),
+          //                   ),
+          //                 ),
+          //               ),
+          //               Container(
+          //                 height: 50,
+          //                 width: 80,
+          //                 decoration: BoxDecoration(
+          //                   border: Border.all(color: seconderyColor, width: 2),
+          //                   borderRadius: BorderRadius.circular(12),
+          //                   boxShadow: [
+          //                     BoxShadow(
+          //                       color: Colors.black.withAlpha(100),
+          //                       blurRadius: 1,
+          //                     ),
+          //                   ],
+          //                   color: Colors.white,
+          //                 ),
+          //                 child: Center(
+          //                   child: Text(
+          //                     'about',
+          //                     style: TextStyle(
+          //                       fontWeight: FontWeight.w400,
+          //                       color: seconderyColor,
+          //                       fontFamily: 'cairo',
+          //                     ),
+          //                   ),
+          //                 ),
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
           SizedBox(height: 12),
           Expanded(
             child: SingleChildScrollView(

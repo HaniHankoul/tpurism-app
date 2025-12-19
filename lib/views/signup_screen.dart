@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../generated/assets.dart';
 import 'main_screen.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -20,6 +21,10 @@ class _SignupScreenState extends State<SignupScreen> {
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(Assets.imagesBg3),
+            fit: BoxFit.fill,
+          ),
           gradient: LinearGradient(
             begin: Alignment.bottomCenter,
             end: Alignment.topCenter,

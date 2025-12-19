@@ -15,46 +15,40 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<NavigationCubit, NavItem>(
       builder: (context, currentNavItem) {
-        return AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle(
-            statusBarColor: primaryColor,
-            systemStatusBarContrastEnforced: true,
-            statusBarIconBrightness: Brightness.light,
-            statusBarBrightness: Brightness.dark,
-          ),
-          child: SafeArea(
-            child: Scaffold(
-              backgroundColor: primaryColor,
-              resizeToAvoidBottomInset: false,
-              body: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  image: currentNavItem == NavItem.book
-                      ? DecorationImage(
-                          image: AssetImage(Assets.imagesBg2),
-                          fit: BoxFit.cover,
-                        )
-                      : null,
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    colors: [
-                      Color(0xffaad09d),
-                      Color(0xff050d50).withAlpha(250),
-                    ],
-                  ),
+        return SafeArea(
+          child: Scaffold(
+            backgroundColor: primaryColor,
+            resizeToAvoidBottomInset: false,
+            body: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                image: currentNavItem == NavItem.book
+                    ? DecorationImage(
+                        image: AssetImage(Assets.imagesBg2),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [Color(0xffaad09d), Color(0xff050d50).withAlpha(250)],
                 ),
-                child: Column(
-                  children: [
-                    Expanded(child: _getPageContent(context, currentNavItem)),
-                    SizedBox(height: 10),
+              ),
+              child: Column(
+                children: [
+                  Expanded(child: _getPageContent(context, currentNavItem)),
+                  SizedBox(height: 10),
 
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8,left: 8,bottom: 8,top: 2),
-                      child: CustomNavigationBar(),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      right: 8,
+                      left: 8,
+                      bottom: 8,
+                      top: 2,
                     ),
-                  ],
-                ),
+                    child: CustomNavigationBar(),
+                  ),
+                ],
               ),
             ),
           ),

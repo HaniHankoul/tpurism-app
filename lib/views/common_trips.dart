@@ -3,6 +3,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:travel/views/home_screen.dart';
 
+import 'book_now_screen.dart';
+
 class CommonTrips extends StatelessWidget {
   const CommonTrips({super.key});
 
@@ -47,7 +49,7 @@ class CommonTrips extends StatelessWidget {
                 ],
               ),
             ),
-            _buildButtonsSection(),
+            _buildButtonsSection(context),
           ],
         ),
       ),
@@ -103,7 +105,7 @@ class CommonTrips extends StatelessWidget {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.blue[800],
+                color: primaryColor,
               ),
             ),
           ),
@@ -212,7 +214,7 @@ class CommonTrips extends StatelessWidget {
     );
   }
 
-  Widget _buildButtonsSection() {
+  Widget _buildButtonsSection(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
@@ -221,8 +223,7 @@ class CommonTrips extends StatelessWidget {
           Expanded(
             child: ElevatedButton(
               onPressed: () {
-                // Handle booking
-              },
+Navigator.push(context, MaterialPageRoute(builder:(context) => BookNowScreen(),));              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: primaryColor,
                 foregroundColor: Colors.white,

@@ -9,6 +9,9 @@ class Assets {
   static const String imagesAttraction1 = 'assets/images/attraction1.jpeg';
   static const String imagesAttratction2 = 'assets/images/attratction2.jpeg';
   static const String imagesBg2 = 'assets/images/bg2.png';
+  static const String imagesBg3 = 'assets/images/bg3.png';
+  static const String imagesChecked = 'assets/images/Checked.json';
+  static const String imagesConfetti = 'assets/images/confetti.json';
   static const String imagesLoading = 'assets/images/Loading.json';
   static const String imagesLogo1 = 'assets/images/logo1.jpeg';
 
