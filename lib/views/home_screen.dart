@@ -1,10 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+import 'package:travel/services/trip_repo.dart';
 import 'package:travel/views/attractions_screen.dart';
 import 'package:travel/views/common_trips.dart';
+import 'package:travel/views/offers_screen.dart';
 import 'package:travel/widgets/see_all_widget.dart';
 import '../generated/assets.dart';
+import '../models/trip_model.dart';
 import 'notify_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,6 +18,9 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+TripModel? tripModel;
+final TripRepository _tripRepository = TripRepository();
+List<TripModel> _tripModel = [];
 bool isSelected = true;
 bool isFiltered = false;
 bool isTrips = true;
@@ -23,6 +30,21 @@ final primaryColor = Color(0xff282b62);
 final seconderyColor = Color(0xffaad09d);
 
 class _HomeScreenState extends State<HomeScreen> {
+  void fetchTrip() async {
+    final trip = await _tripRepository.getAllTrips();
+    setState(() {
+      _tripModel = trip;
+      print('object');
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    fetchTrip();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -129,9 +151,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          SizedBox(height: 8,),
-          AnimatedContainer(duration: Duration(milliseconds: 250),
-            height: isFiltered?180:0,
+          SizedBox(height: 8),
+          AnimatedContainer(
+            duration: Duration(milliseconds: 250),
+            height: isFiltered ? 180 : 0,
             width: screenWidth * 0.6,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -164,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontSize: 20,
                           ),
                         ),
-              
+
                         Checkbox(
                           activeColor: primaryColor,
                           hoverColor: primaryColor,
@@ -454,21 +477,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           Spacer(),
                           InkWell(
                             onTap: () {
-                              showModalBottomSheet(
-                                useSafeArea: true,
-                                backgroundColor: Colors.white,
-                                showDragHandle: true,
-                                enableDrag: true,
-                                shape: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(16),
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SeeAllWidget(),
                                 ),
-                                context: context,
-                                builder: (context) {
-                                  return SizedBox(
-                                    width: double.infinity,
-                                    child: SeeAllWidget(),
-                                  );
-                                },
                               );
                             },
                             child: Text(
@@ -484,9 +497,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     SizedBox(height: 4),
+                    _tripModel.isEmpty?SizedBox(
+                      width: double.infinity,
+                      height: 200,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: Lottie.asset(Assets.imagesLoading),
+                          ),
+
+                        ],
+                      ),
+                    ):
                     CarouselSlider(
                       options: CarouselOptions(autoPlay: true, height: 220),
-                      items: [1, 2, 3, 4, 5].map((i) {
+                      items: _tripModel.map((i) {
                         return Builder(
                           builder: (BuildContext context) {
                             return InkWell(
@@ -494,7 +522,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => CommonTrips(),
+                                    builder: (context) =>
+                                        CommonTrips(id: i.tripId),
                                   ),
                                 );
                               },
@@ -518,7 +547,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     child: Center(
                                       child: Text(
-                                        'data $i',
+                                        '$i',
                                         style: TextStyle(fontSize: 16.0),
                                       ),
                                     ),
@@ -526,7 +555,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   SizedBox(height: 6),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8),
-                                    child: Row(children: [Text('description')]),
+                                    child: Row(children: [Text(i.title)]),
                                   ),
                                 ],
                               ),
@@ -575,7 +604,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SizedBox(height: 12),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OffersScreen(),
+                          ),
+                        );
+                      },
                       child: Container(
                         height: 90,
                         width: screenWidth * 0.8,

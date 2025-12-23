@@ -1,12 +1,39 @@
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:travel/views/home_screen.dart';
-
+import '../generated/assets.dart';
+import '../models/trip_model.dart';
+import '../services/trip_repo.dart';
 import 'book_now_screen.dart';
 
-class CommonTrips extends StatelessWidget {
-  const CommonTrips({super.key});
+class CommonTrips extends StatefulWidget {
+  int id;
+
+  CommonTrips({super.key, required this.id});
+
+  @override
+  State<CommonTrips> createState() => _CommonTripsState();
+}
+
+class _CommonTripsState extends State<CommonTrips> {
+  final TripRepository _tripRepository = TripRepository();
+  TripModel? tripModel;
+
+  void fetchTrip() async {
+    final trip = await _tripRepository.getTripsById(widget.id);
+    setState(() {
+      tripModel = trip;
+      print('object');
+    });
+  }
+
+  @override
+  void initState() {
+    fetchTrip();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,36 +49,57 @@ class CommonTrips extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Trip Name', style: TextStyle(color: Colors.white)),
+        title: Text(
+          'Trip Info',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: primaryColor,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Container(
         width: double.infinity,
-        decoration: BoxDecoration(
-            color:  seconderyColor
-        ),
-        child: Column(
-          children: [
-
-            Expanded(
-              child: ListView(
+        decoration: BoxDecoration(color: seconderyColor),
+        child: tripModel == null
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildImageCarousel(tripImages),
-                  const SizedBox(height: 20),
-                  // Trip Name and Rating
-                  _buildTripNameAndRating(),
-                  const SizedBox(height: 12),
-                  // Description
-                  _buildDescription(),
-                  // Dates Section
-                  _buildDatesSection(),
+                  SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: Lottie.asset(Assets.imagesLoading),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Loading ...',
+                    style: TextStyle(
+                      color: primaryColor,
+                      fontSize: 22,
+                      fontFamily: 'cairo',
+                    ),
+                  ),
+                ],
+              )
+            : Column(
+                children: [
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        _buildImageCarousel(tripImages),
+                        const SizedBox(height: 20),
+                        // Trip Name and Rating
+                        _buildTripNameAndRating(),
+                        const SizedBox(height: 12),
+                        // Description
+                        _buildDescription(),
+                        const SizedBox(height: 12),
+                        // Dates Section
+                        _buildDatesSection(),
+                      ],
+                    ),
+                  ),
+                  _buildButtonsSection(context),
                 ],
               ),
-            ),
-            _buildButtonsSection(context),
-          ],
-        ),
       ),
     );
   }
@@ -72,7 +120,7 @@ class CommonTrips extends StatelessWidget {
         ],
       ),
       child: CarouselSlider(
-        options: CarouselOptions(autoPlay: true, height:350,),
+        options: CarouselOptions(autoPlay: true, height: 350),
         items: images.map((i) {
           return Builder(
             builder: (BuildContext context) {
@@ -82,7 +130,6 @@ class CommonTrips extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(14),
                   color: Colors.white,
-
                 ),
                 child: Image(fit: BoxFit.fill, image: NetworkImage('$i')),
               );
@@ -101,7 +148,7 @@ class CommonTrips extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              'Mountain Adventure in Swiss Alps',
+              '${tripModel?.title}',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -141,7 +188,7 @@ class CommonTrips extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 16, left: 8, right: 8),
       child: Text(
-        'Experience the breathtaking beauty of the Swiss Alps with this unforgettable mountain adventure. Enjoy scenic hikes, cozy mountain lodges, and stunning views that will leave you in awe.',
+        '${tripModel?.description}',
         style: TextStyle(fontSize: 16, color: primaryColor, height: 1.5),
       ),
     );
@@ -163,7 +210,7 @@ class CommonTrips extends StatelessWidget {
             _buildDateItem(
               icon: Icons.calendar_today,
               title: 'Start Date',
-              date: 'June 15, 2024',
+              date: '${tripModel?.startDate.year}'+'-'+'${tripModel?.startDate.month}'+'-'+'${tripModel?.startDate.day}',
               color: Colors.blue,
             ),
             Container(
@@ -174,7 +221,7 @@ class CommonTrips extends StatelessWidget {
             _buildDateItem(
               icon: Icons.calendar_today,
               title: 'End Date',
-              date: 'June 22, 2024',
+              date: '${tripModel?.endDate.year}'+'-'+'${tripModel?.endDate.month}'+'-'+'${tripModel?.endDate.day}',
               color: Colors.green,
             ),
           ],
@@ -223,7 +270,11 @@ class CommonTrips extends StatelessWidget {
           Expanded(
             child: ElevatedButton(
               onPressed: () {
-Navigator.push(context, MaterialPageRoute(builder:(context) => BookNowScreen(),));              },
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => BookNowScreen()),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: primaryColor,
                 foregroundColor: Colors.white,
